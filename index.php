@@ -37,11 +37,14 @@
 
 require_once 'connect.php';
 	
-   $sql = "SELECT * FROM tbl_member WHERE Name LIKE '%".$strKeyword."%' ";
+   $sql = "SELECT * FROM tbl_member 
+           INNER JOIN tbl_position ON tbl_member.p_id = tbl_position.p_id
+           WHERE Name LIKE '%".$strKeyword."%' ";
 
    $stmt = $conn->prepare($sql);
    $stmt->execute();
-
+    // var_dump($stmt);
+    // exit;
 ?>
         <div class="container">
             <div class="row">
@@ -51,8 +54,10 @@ require_once 'connect.php';
                         <thead>
                             <tr>
                                 <th width="5%">ลำดับ</th>
+                                <th width="5%">id_emp</th>
                                 <th width="40%">ชื่อ</th>
                                 <th width="45%">นามสกุล</th>
+                                <th width="45%">ชื่อตำแหน่ง</th>
                                 <th width="5%">แก้ไข</th>
                                 <th width="5%">ลบ</th>
                             </tr>
@@ -64,8 +69,10 @@ require_once 'connect.php';
                         ?>
                             <tr>
                                 <td><?= $result['id'];?></td>
+                                <td><?= $result['p_id'];?></td>
                                 <td><?= $result['name'];?></td>
                                 <td><?= $result['surname'];?></td>
+                                <td><?= $result['p_name'];?></td>
                                 <td><a href="formEdit.php?id=<?= $result['id'];?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
                                 <td><a href="del.php?id=<?= $result['id'];?>" class="btn btn-danger btn-sm" onclick="return confirm('ยืนยันการลบข้อมูล !!');">ลบ</a></td>
                             </tr>
